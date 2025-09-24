@@ -11,7 +11,7 @@ export default function ResultBar({ index, label, value = 0, total = 0, color = 
           <span className="w-7 h-7 grid place-items-center rounded-full bg-white border text-[var(--primary-700)] font-semibold">{index}</span>
           <span className="font-medium" style={{ color: pct ? '#fff' : '#111827' }}>{label}</span>
         </div>
-        <span className="font-semibold" style={{ color: pct ? '#fff' : '#111827' }}>{pct}%</span>
+        <span className="font-semibold" style={{ color: '#111827' }}>{pct}%</span>
       </div>
     </div>
   )
