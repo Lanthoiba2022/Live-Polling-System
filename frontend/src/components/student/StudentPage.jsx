@@ -124,6 +124,8 @@ export default function StudentPage() {
   const poll = useSelector(s=>s.poll)
   const [selectedIndex, setSelectedIndex] = useState(null)
   const [submittedRemaining, setSubmittedRemaining] = useState(null)
+  const [questionNumber, setQuestionNumber] = useState(0) // starts at 0; first running => 1
+  const [prevStatus, setPrevStatus] = useState(null)
 
   useEffect(() => {
     const socket = getSocket()
@@ -134,6 +136,12 @@ export default function StudentPage() {
 
   // Reset local submission state when a new poll starts or ends
   useEffect(() => {
+    // increment question number on transition into running state
+    if (poll.status === 'running' && prevStatus !== 'running') {
+      setQuestionNumber(n => n + 1)
+    }
+    setPrevStatus(poll.status)
+
     if (poll.status === 'running') {
       setSubmittedRemaining(null)
       setSelectedIndex(null)
@@ -172,7 +180,7 @@ export default function StudentPage() {
       ) : poll.status === 'running' ? (
         <div className="w-full max-w-3xl px-6">
           <div className="flex items-center gap-8 mb-4">
-            <h2 className="text-[22px] md:text-[24px] font-semibold tracking-tight">Question 1</h2>
+            <h2 className="text-[22px] md:text-[24px] font-semibold tracking-tight">Question {questionNumber || 1}</h2>
             <span className="text-sm flex items-center gap-2">
               <span aria-hidden>⏱</span>
               <span className="font-semibold" style={{color:'#EF4444'}}>00:{String(submittedRemaining ?? poll.remaining).padStart(2,'0')}</span>
@@ -221,7 +229,7 @@ export default function StudentPage() {
       ) : (
         <div className="w-full max-w-3xl px-6">
           <div className="flex items-center gap-8 mb-4">
-            <h2 className="text-[22px] md:text-[24px] font-semibold tracking-tight">Question 1</h2>
+            <h2 className="text-[22px] md:text-[24px] font-semibold tracking-tight">Question {questionNumber || 1}</h2>
             <span className="text-sm flex items-center gap-2">
               <span aria-hidden>⏱</span>
               <span className="font-semibold" style={{color:'#EF4444'}}>00:{String(submittedRemaining ?? 0).padStart(2,'0')}</span>

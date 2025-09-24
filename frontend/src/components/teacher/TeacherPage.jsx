@@ -8,6 +8,7 @@ import YesNoRadio from '../ui/YesNoRadio'
 import QuestionAnswerCard from '../ui/QuestionAnswerCard'
 import ResultBar from '../ui/ResultBar'
 import { toast } from 'react-toastify'
+import { Link } from 'react-router-dom'
 
 export default function TeacherPage() {
   const dispatch = useDispatch()
@@ -54,8 +55,8 @@ export default function TeacherPage() {
   return (
     <div className="min-h-dvh bg-white">
       {poll.status !== 'running' && poll.status !== 'ended' ? (
-        <div className="max-w-5xl mx-auto px-6 pt-10 pb-28">
-          <div className="mb-6"><BrandBadge /></div>
+          <div className="max-w-5xl mx-auto px-6 pt-10 pb-28">
+            <div className="mb-6"><BrandBadge /></div>
           <>
             <h1 className="text-4xl font-semibold text-[var(--heading)] mb-2">Let’s <span className="font-extrabold">Get Started</span></h1>
             <p className="text-[15px] text-[var(--muted)] max-w-3xl mb-10">you’ll have the ability to create and manage polls, ask questions, and monitor your students' responses in real-time.</p>
@@ -95,9 +96,14 @@ export default function TeacherPage() {
         </div>
       ) : (
         <div className="min-h-dvh flex items-center justify-center">
+          {poll.status === 'ended' && (
+            <Link to="/teacher/history" className="fixed top-14 right-12 h-12 px-6 rounded-full text-white font-semibold bg-gradient-to-r from-[var(--primary-500)] to-[var(--primary-600)] grid place-items-center shadow-[0_8px_24px_rgba(83,76,255,0.25)]">
+              View Poll history
+            </Link>
+          )}
           <div className="w-full max-w-3xl px-6">
             <div className="flex items-center gap-8 mb-4">
-              <h2 className="text:[22px] md:text-[24px] font-semibold tracking-tight">Question 1</h2>
+              <h2 className="text:[22px] md:text-[24px] font-semibold tracking-tight">Question</h2>
             </div>
             <div className="rounded-lg border overflow-hidden w-full bg-white" style={{borderColor:'#D1D5DB'}}>
               <div className="px-4 py-3 text-white font-medium" style={{background:'linear-gradient(90deg,#3F3F46,#6B7280)'}}>
@@ -112,7 +118,8 @@ export default function TeacherPage() {
                 })}
               </div>
             </div>
-            <div className="mt-6 flex justify-end">
+            <div className="mt-6 flex items-center justify-between">
+              <span />
               <button
                 className="min-w-[240px] h-12 rounded-full text-white font-semibold bg-gradient-to-r from-[var(--primary-500)] to-[var(--primary-600)] disabled:cursor-not-allowed"
                 style={{ cursor: poll.status === 'ended' ? 'pointer' : 'not-allowed' }}

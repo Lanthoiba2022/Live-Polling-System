@@ -28,7 +28,8 @@ const state = {
     results: { Yes: 0, No: 0 }, // legacy
     optionCounts: [], // array of counts per option
     answersByName: new Map(), // name -> optionIndex
-  }
+  },
+  history: [], // array of { id, question, options, optionCounts, startedAt, endedAt, duration }
 }
 
 function broadcastWaitingIfIdle() {
@@ -41,6 +42,17 @@ function endPoll(reason = 'time') {
   if (!state.poll.running) return
   clearInterval(state.poll.timer)
   state.poll.timer = null
+  const snapshot = {
+    id: Date.now(),
+    question: state.poll.question,
+    options: [...state.poll.optionsText],
+    optionCounts: [...state.poll.optionCounts],
+    startedAt: state.poll.endsAt - state.poll.duration * 1000,
+    endedAt: Date.now(),
+    duration: state.poll.duration,
+    reason,
+  }
+  state.history.push(snapshot)
   state.poll.running = false
   io.emit('poll:ended', { optionCounts: [...state.poll.optionCounts] })
   // reset question to allow next
@@ -140,6 +152,11 @@ io.on('connection', (socket) => {
 
 app.get('/', (req, res) => {
   res.json({ ok: true })
+})
+
+// Return in-memory poll history (latest first)
+app.get('/history', (req, res) => {
+  res.json({ items: [...state.history].reverse() })
 })
 
 const PORT = process.env.PORT || 4000
