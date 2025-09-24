@@ -178,21 +178,42 @@ export default function StudentPage() {
               <span className="font-semibold" style={{color:'#EF4444'}}>00:{String(submittedRemaining ?? poll.remaining).padStart(2,'0')}</span>
             </span>
           </div>
-          <QuestionAnswerCard
-            question={poll.question}
-            options={poll.options}
-            selectedIndex={selectedIndex}
-            onSelect={setSelectedIndex}
-          />
-          <div className="mt-6 flex justify-center">
-            <button
-              onClick={()=> selectedIndex!==null && submittedRemaining===null && handleVote(selectedIndex)}
-              disabled={selectedIndex===null || submittedRemaining!==null}
-              className="min-w-[220px] h-12 rounded-full text-white font-semibold shadow-[0_8px_24px_rgba(83,76,255,0.25)] bg-gradient-to-r from-[var(--primary-500)] to-[var(--primary-600)]"
-            >
-              {submittedRemaining===null ? 'Submit' : 'Submitted'}
-            </button>
-          </div>
+          {submittedRemaining===null ? (
+            <>
+              <QuestionAnswerCard
+                question={poll.question}
+                options={poll.options}
+                selectedIndex={selectedIndex}
+                onSelect={setSelectedIndex}
+              />
+            <div className="mt-6 flex justify-center">
+              <button
+                onClick={()=> selectedIndex!==null && handleVote(selectedIndex)}
+                disabled={selectedIndex===null}
+                className="min-w-[220px] h-12 rounded-full text-white font-semibold shadow-[0_8px_24px_rgba(83,76,255,0.25)] bg-gradient-to-r from-[var(--primary-500)] to-[var(--primary-600)]"
+              >
+                Submit
+              </button>
+            </div>
+            </>
+          ) : (
+            <>
+              <div className="rounded-lg border overflow-hidden w-full bg-white mt-6" style={{borderColor:'#D1D5DB'}}>
+                <div className="px-4 py-3 text-white font-medium" style={{background:'linear-gradient(90deg,#3F3F46,#6B7280)'}}>
+                  {poll.question}
+                </div>
+                <div className="p-4 space-y-4">
+                  {(poll.options||[]).map((label, idx)=>{
+                    const total = (poll.optionCounts||[]).reduce((a,b)=>a+(b||0), 0)
+                    return (
+                      <ResultBar key={idx} index={idx+1} label={label} value={(poll.optionCounts||[])[idx]||0} total={total} />
+                    )
+                  })}
+                </div>
+              </div>
+              <p className="text-center mt-8 text-[18px] font-extrabold tracking-tight text-[var(--heading)]">Wait for the teacher to ask a new question.</p>
+            </>
+          )}
           <button aria-label="chat" className="fixed bottom-6 right-6 w-14 h-14 rounded-full grid place-items-center text-white bg-gradient-to-br from-[var(--primary-500)] to-[var(--primary-700)] shadow-[0_10px_30px_rgba(83,76,255,0.35)]">
             💬
           </button>
