@@ -1,16 +1,21 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import Landing from './components/Landing'
+import TeacherPage from './components/teacher/TeacherPage'
+import StudentPage from './components/student/StudentPage'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <h1 class="text-3xl font-bold ">
-    Hello world!
-  </h1>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/teacher" element={<TeacherPage />} />
+        <Route path="/student" element={<StudentPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+      <ToastContainer position="top-center" />
     </>
   )
 }
