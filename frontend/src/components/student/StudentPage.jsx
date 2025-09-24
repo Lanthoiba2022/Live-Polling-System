@@ -123,6 +123,7 @@ export default function StudentPage() {
   const { name, joined } = useSelector(s=>s.user)
   const poll = useSelector(s=>s.poll)
   const [selectedIndex, setSelectedIndex] = useState(null)
+  const [submittedRemaining, setSubmittedRemaining] = useState(null)
 
   useEffect(() => {
     const socket = getSocket()
@@ -130,6 +131,21 @@ export default function StudentPage() {
       socket.emit('student:join', { name })
     }
   }, [joined, name])
+
+  // Reset local submission state when a new poll starts or ends
+  useEffect(() => {
+    if (poll.status === 'running') {
+      setSubmittedRemaining(null)
+      setSelectedIndex(null)
+    }
+    if (poll.status === 'ended') {
+      // keep submittedRemaining as is for the ended view
+    }
+    if (poll.status === 'waiting') {
+      setSubmittedRemaining(null)
+      setSelectedIndex(null)
+    }
+  }, [poll.status])
 
   const handleJoin = (n) => {
     if (!n) return
@@ -141,6 +157,10 @@ export default function StudentPage() {
   const handleVote = (optionIndex) => {
     const socket = getSocket()
     socket.emit('poll:vote', { optionIndex })
+    // Freeze timer locally at the moment of submission
+    if (submittedRemaining === null) {
+      setSubmittedRemaining(poll.remaining)
+    }
   }
 
   return (
@@ -155,7 +175,7 @@ export default function StudentPage() {
             <h2 className="text-[22px] md:text-[24px] font-semibold tracking-tight">Question 1</h2>
             <span className="text-sm flex items-center gap-2">
               <span aria-hidden>⏱</span>
-              <span className="font-semibold" style={{color:'#EF4444'}}>00:{String(poll.remaining).padStart(2,'0')}</span>
+              <span className="font-semibold" style={{color:'#EF4444'}}>00:{String(submittedRemaining ?? poll.remaining).padStart(2,'0')}</span>
             </span>
           </div>
           <QuestionAnswerCard
@@ -166,11 +186,11 @@ export default function StudentPage() {
           />
           <div className="mt-6 flex justify-center">
             <button
-              onClick={()=>selectedIndex!==null && handleVote(selectedIndex)}
-              disabled={selectedIndex===null}
+              onClick={()=> selectedIndex!==null && submittedRemaining===null && handleVote(selectedIndex)}
+              disabled={selectedIndex===null || submittedRemaining!==null}
               className="min-w-[220px] h-12 rounded-full text-white font-semibold shadow-[0_8px_24px_rgba(83,76,255,0.25)] bg-gradient-to-r from-[var(--primary-500)] to-[var(--primary-600)]"
             >
-              Submit
+              {submittedRemaining===null ? 'Submit' : 'Submitted'}
             </button>
           </div>
           <button aria-label="chat" className="fixed bottom-6 right-6 w-14 h-14 rounded-full grid place-items-center text-white bg-gradient-to-br from-[var(--primary-500)] to-[var(--primary-700)] shadow-[0_10px_30px_rgba(83,76,255,0.35)]">
@@ -183,7 +203,7 @@ export default function StudentPage() {
             <h2 className="text-[22px] md:text-[24px] font-semibold tracking-tight">Question 1</h2>
             <span className="text-sm flex items-center gap-2">
               <span aria-hidden>⏱</span>
-              <span className="font-semibold" style={{color:'#EF4444'}}>00:00</span>
+              <span className="font-semibold" style={{color:'#EF4444'}}>00:{String(submittedRemaining ?? 0).padStart(2,'0')}</span>
             </span>
           </div>
           <div className="rounded-lg border overflow-hidden w-full bg-white" style={{borderColor:'#D1D5DB'}}>

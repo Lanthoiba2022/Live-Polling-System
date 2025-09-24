@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getSocket } from '../../services/socket'
 import BrandBadge from '../ui/BrandBadge'
@@ -6,6 +6,7 @@ import TimeSelect from './TimeSelect'
 import TextAreaWithCounter from '../ui/TextAreaWithCounter'
 import YesNoRadio from '../ui/YesNoRadio'
 import QuestionAnswerCard from '../ui/QuestionAnswerCard'
+import ResultBar from '../ui/ResultBar'
 import { toast } from 'react-toastify'
 
 export default function TeacherPage() {
@@ -25,6 +26,20 @@ export default function TeacherPage() {
     getSocket()
   }, [])
 
+  // Ensure students see waiting screen while teacher is preparing the next question
+  const preparedRef = useRef(false)
+  useEffect(() => {
+    const isCreating = poll.status !== 'running' && poll.status !== 'ended'
+    if (isCreating && !preparedRef.current) {
+      preparedRef.current = true
+      const socket = getSocket()
+      socket.emit('poll:prepare')
+    }
+    if (!isCreating) {
+      preparedRef.current = false
+    }
+  }, [poll.status])
+
   const startPoll = () => {
     if (!question.trim()) { toast.error('Please enter a question'); return }
     const socket = getSocket()
@@ -38,11 +53,9 @@ export default function TeacherPage() {
 
   return (
     <div className="min-h-dvh bg-white">
-      <div className="max-w-5xl mx-auto px-6 pt-10 pb-28">
-        {poll.status !== 'running' && poll.status !== 'ended' && (
+      {poll.status !== 'running' && poll.status !== 'ended' ? (
+        <div className="max-w-5xl mx-auto px-6 pt-10 pb-28">
           <div className="mb-6"><BrandBadge /></div>
-        )}
-        {poll.status !== 'running' && poll.status !== 'ended' ? (
           <>
             <h1 className="text-4xl font-semibold text-[var(--heading)] mb-2">Let’s <span className="font-extrabold">Get Started</span></h1>
             <p className="text-[15px] text-[var(--muted)] max-w-3xl mb-10">you’ll have the ability to create and manage polls, ask questions, and monitor your students' responses in real-time.</p>
@@ -79,21 +92,46 @@ export default function TeacherPage() {
               </div>
             </div>
           </>
-        ) : (
-          <div className="mt-16 w-full max-w-3xl px-6 mx-auto">
-            <div className="mb-4 text-[22px] font-semibold">Question</div>
-            <QuestionAnswerCard question={poll.question} options={poll.options||[]} />
+        </div>
+      ) : (
+        <div className="min-h-dvh flex items-center justify-center">
+          <div className="w-full max-w-3xl px-6">
+            <div className="flex items-center gap-8 mb-4">
+              <h2 className="text:[22px] md:text-[24px] font-semibold tracking-tight">Question 1</h2>
+            </div>
+            <div className="rounded-lg border overflow-hidden w-full bg-white" style={{borderColor:'#D1D5DB'}}>
+              <div className="px-4 py-3 text-white font-medium" style={{background:'linear-gradient(90deg,#3F3F46,#6B7280)'}}>
+                {poll.question}
+              </div>
+              <div className="p-4 space-y-4">
+                {(poll.options||[]).map((label, idx)=>{
+                  const total = (poll.optionCounts||[]).reduce((a,b)=>a+(b||0), 0)
+                  return (
+                    <ResultBar key={idx} index={idx+1} label={label} value={(poll.optionCounts||[])[idx]||0} total={total} />
+                  )
+                })}
+              </div>
+            </div>
             <div className="mt-6 flex justify-end">
               <button
-                className="min-w-[240px] h-12 rounded-full text-white font-semibold bg-gradient-to-r from-[var(--primary-500)] to-[var(--primary-600)]"
-                onClick={()=>{ setQuestion(''); setOptions([{id:1,text:'',correct:'Yes'},{id:2,text:'',correct:'No'}]); }}
+                className="min-w-[240px] h-12 rounded-full text-white font-semibold bg-gradient-to-r from-[var(--primary-500)] to-[var(--primary-600)] disabled:cursor-not-allowed"
+                style={{ cursor: poll.status === 'ended' ? 'pointer' : 'not-allowed' }}
+                disabled={poll.status !== 'ended'}
+                onClick={()=>{
+                  const socket = getSocket()
+                  socket.emit('poll:prepare')
+                  setQuestion('');
+                  setOptions([{id:1,text:'',correct:'Yes'},{id:2,text:'',correct:'No'}]);
+                  // Return to question creation screen
+                  dispatch({ type: 'poll/reset' })
+                }}
               >
                 + Ask a new question
               </button>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {poll.status !== 'running' && poll.status !== 'ended' && (
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-[0_-6px_24px_rgba(16,24,40,0.06)]">
