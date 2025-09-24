@@ -129,6 +129,13 @@ io.on('connection', (socket) => {
       endPoll('all-answered')
     }
   })
+
+  // When teacher returns to question creation, notify students to wait
+  socket.on('poll:prepare', () => {
+    if (!state.poll.running) {
+      io.emit('poll:waiting')
+    }
+  })
 })
 
 app.get('/', (req, res) => {
