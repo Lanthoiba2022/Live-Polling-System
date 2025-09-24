@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+:root {
+  --heading: #0b0b0c;
+  --muted: #6b7280;
+  --card-border: #e5e7eb;
+  --primary-300: #a5b4fc;
+  --primary-400: #818cf8;
+  --primary-500: #6366f1;
+  --primary-600: #4f46e5;
+  --primary-700: #4338ca;
+  --badge-bg: #f3f4ff;
+}
+
+html, body, #root { height: 100%; }
+body { background: #ffffff; }
+
