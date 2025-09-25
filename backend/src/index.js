@@ -18,6 +18,12 @@ const io = new Server(server, {
 const state = {
   studentsBySocketId: new Map(), // socketId -> name
   activeNames: new Set(), // currently joined names (unique per tab)
+  chat: {
+    // room -> Set(name)
+    participantsByRoom: new Map(),
+    // socketId -> { name, rooms: Set(room) }
+    sockets: new Map(),
+  },
   poll: {
     running: false,
     question: '',
@@ -74,6 +80,21 @@ io.on('connection', (socket) => {
     if (name) {
       state.studentsBySocketId.delete(socket.id)
       state.activeNames.delete(name)
+    }
+
+    // Chat presence cleanup
+    const chatMeta = state.chat.sockets.get(socket.id)
+    if (chatMeta) {
+      const leavingName = chatMeta.name
+      for (const room of chatMeta.rooms) {
+        const set = state.chat.participantsByRoom.get(room)
+        if (set) {
+          set.delete(leavingName)
+          io.to(room).emit('chat:left', { name: leavingName })
+          io.to(room).emit('chat:participants', Array.from(set).map((n) => ({ name: n })))
+        }
+      }
+      state.chat.sockets.delete(socket.id)
     }
   })
 
@@ -149,6 +170,67 @@ io.on('connection', (socket) => {
     if (!state.poll.running) {
       io.emit('poll:waiting')
     }
+  })
+
+  // ===== Chat events =====
+  socket.on('chat:join', ({ room, name, role }) => {
+    const r = String(room || 'poll-global')
+    const displayName = String(name || state.studentsBySocketId.get(socket.id) || 'User').trim()
+    if (!displayName) return
+    socket.join(r)
+
+    // track socket meta
+    const meta = state.chat.sockets.get(socket.id) || { name: displayName, rooms: new Set() }
+    meta.name = displayName
+    meta.rooms.add(r)
+    state.chat.sockets.set(socket.id, meta)
+
+    // add to participants set
+    const set = state.chat.participantsByRoom.get(r) || new Set()
+    set.add(displayName)
+    state.chat.participantsByRoom.set(r, set)
+
+    // notify room
+    socket.to(r).emit('chat:joined', { name: displayName, role })
+    io.to(r).emit('chat:participants', Array.from(set).map((n) => ({ name: n })))
+  })
+
+  socket.on('chat:leave', ({ room }) => {
+    const r = String(room || 'poll-global')
+    const meta = state.chat.sockets.get(socket.id)
+    if (!meta) return
+    const name = meta.name
+    socket.leave(r)
+    if (meta.rooms.has(r)) meta.rooms.delete(r)
+    const set = state.chat.participantsByRoom.get(r)
+    if (set) {
+      set.delete(name)
+      io.to(r).emit('chat:left', { name })
+      io.to(r).emit('chat:participants', Array.from(set).map((n) => ({ name: n })))
+    }
+  })
+
+  socket.on('chat:list', ({ room }) => {
+    const r = String(room || 'poll-global')
+    const set = state.chat.participantsByRoom.get(r) || new Set()
+    socket.emit('chat:participants', Array.from(set).map((n) => ({ name: n })))
+  })
+
+  socket.on('chat:message', ({ room, text, name, role }) => {
+    const r = String(room || 'poll-global')
+    const messageText = String(text || '').trim()
+    if (!messageText) return
+    const displayName = String(name || state.studentsBySocketId.get(socket.id) || 'User').trim()
+    const payload = {
+      id: Date.now(),
+      room: r,
+      name: displayName,
+      role: role || null,
+      text: messageText,
+      ts: Date.now(),
+    }
+    // Send to everyone EXCEPT the sender to avoid duplicate (client appends optimistically)
+    socket.to(r).emit('chat:message', payload)
   })
 })
 

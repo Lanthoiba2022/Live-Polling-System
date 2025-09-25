@@ -6,6 +6,7 @@ import BrandBadge from '../ui/BrandBadge'
 import CircularLoader from '../ui/CircularLoader'
 import QuestionAnswerCard from '../ui/QuestionAnswerCard'
 import ResultBar from '../ui/ResultBar'
+import ChatWidget from '../ui/ChatWidget'
 
 function NameEntry({ onSubmit }) {
   const [name, setName] = useState('')
@@ -248,6 +249,7 @@ export default function StudentPage() {
           <p className="waitAfterSubmit mt-12">Wait for the teacher to ask a new question..</p>
         </div>
       )}
+      {joined && <ChatWidget room="poll-global" />}
     </div>
   )
 }
