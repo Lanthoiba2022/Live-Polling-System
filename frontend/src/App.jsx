@@ -39,30 +39,34 @@ function App() {
     return () => socket.off('student:kicked', onKicked)
   }, [dispatch])
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/teacher" element={<TeacherPage />} />
-        <Route path="/teacher/history" element={<PollHistory />} />
-        <Route path="/student" element={<StudentPage />} />
-        <Route path="/kicked" element={<KickedOut />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-      <ToastContainer
-        position="bottom-right"
-        newestOnTop
-        closeOnClick
-        pauseOnHover
-        hideProgressBar
-        closeButton={<CloseButton />}
-        theme="light"
-        toastClassName={() =>
-          'bg-white shadow-md border border-gray-200 inline-flex items-center gap-2 min-h-0 py-1.5 px-3 text-xs text-gray-900 whitespace-nowrap rounded-md'
-        }
-        bodyClassName={() => 'm-0 p-0 whitespace-nowrap'}
-        style={{ zIndex: 9999 }}
-      />
-    </>
+    <div className="app-scale-viewport">
+      <div className="app-scale">
+        <div className="app-canvas">
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/teacher" element={<TeacherPage />} />
+            <Route path="/teacher/history" element={<PollHistory />} />
+            <Route path="/student" element={<StudentPage />} />
+            <Route path="/kicked" element={<KickedOut />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+          <ToastContainer
+            position="bottom-right"
+            newestOnTop
+            closeOnClick
+            pauseOnHover
+            hideProgressBar
+            closeButton={<CloseButton />}
+            theme="light"
+            toastClassName={() =>
+              'bg-white shadow-md border border-gray-200 inline-flex items-center gap-2 min-h-0 py-1.5 px-3 text-xs text-gray-900 whitespace-nowrap rounded-md'
+            }
+            bodyClassName={() => 'm-0 p-0 whitespace-nowrap'}
+            style={{ zIndex: 9999 }}
+          />
+        </div>
+      </div>
+    </div>
   )
 }
 

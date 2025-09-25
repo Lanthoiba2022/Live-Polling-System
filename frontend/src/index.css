@@ -34,7 +34,64 @@ body {
 }
 
 html, body, #root { height: 100%; }
-body { background: #ffffff; }
+body { background: #ffffff; overflow-x: hidden; }
+
+/* Viewport wrapper to ensure no horizontal scrolling when scaled */
+.app-scale-viewport {
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+/*
+  Responsive scaling without altering large-screen UI
+  - Keep default (desktop/laptop) exactly as-is
+  - Progressively reduce font-size and apply a uniform scale on smaller screens
+*/
+/* Base design width used for proportional scaling on small screens */
+:root { --app-base-width: 1024; }
+
+.app-scale {
+  transform: none;
+}
+
+/* Fixed-width inner canvas to scale uniformly */
+.app-canvas {
+  width: calc(var(--app-base-width) * 1px);
+  margin-left: auto;
+  margin-right: auto;
+  transform-origin: top center;
+}
+
+/* Base: >= 1280px (unchanged) */
+@media (min-width: 1024px) {
+  :root { font-size: 90%; }
+  .app-scale { transform: none; width: auto; }
+  .app-canvas { transform: none; margin-left: auto; margin-right: auto; position: static; }
+}
+
+/* 1024px–1279px: tiny reduction */
+/* Continuous proportional scale below 1024px */
+@media (max-width: 1023px) {
+  /* Keep text readable while shrinking layout */
+  :root { font-size: 85%; }
+  .app-scale { width: 100%; }
+  .app-canvas {
+    margin: 0; /* avoid layout centering width that causes overflow */
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%) scale(calc(100vw / (var(--app-base-width) * 1px)));
+  }
+}
+
+/* Slightly smaller base font below 640px; layout still scales proportionally */
+@media (max-width: 639px) {
+  :root { font-size: 82%; }
+}
+
+/* Optimize for small-phone width like 412px: use a smaller base canvas for better legibility */
+@media (max-width: 480px) {
+  :root { --app-base-width: 768; font-size: 86%; }
+}
 
 .brand-badge {
   display: inline-flex;
