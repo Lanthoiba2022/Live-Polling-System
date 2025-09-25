@@ -223,12 +223,32 @@ export default function ChatWidget({ room = 'poll-global', className = '', requi
             </div>
           ) : (
             <div className="px-4 py-3 overflow-y-auto" style={{ height: 361 }}>
-              <div className="text-sm text-gray-500 mb-3">Name</div>
+              <div className="grid grid-cols-2 text-sm text-gray-500 mb-3">
+                <div>Name</div>
+                {displayRole === 'teacher' ? <div className="text-right pr-2">Action</div> : <div />}
+              </div>
               <ul className="space-y-3">
                 {participants.map((p) => {
                   const label = p.name === displayName ? `${p.name} (You)` : p.name
                   return (
-                    <li key={p.name} className="text-[14px] text-gray-900 font-semibold">{label}</li>
+                    <li key={p.name} className="grid grid-cols-2 items-center">
+                      <div className="text-[14px] text-gray-900 font-semibold">{label}</div>
+                      {displayRole === 'teacher' ? (
+                        <div className="text-right">
+                          {p.name !== 'Teacher' && (
+                            <button
+                              type="button"
+                              onClick={() => socket.emit('chat:kick', { room, name: p.name })}
+                              className="text-[#2563EB] underline cursor-pointer"
+                            >
+                              Kick out
+                            </button>
+                          )}
+                        </div>
+                      ) : (
+                        <div />
+                      )}
+                    </li>
                   )
                 })}
                 {participants.length === 0 && (
