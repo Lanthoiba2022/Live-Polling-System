@@ -1,9 +1,28 @@
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap');
+
+/* Set Sora as default font */
+*, *::before, *::after {
+  font-family: 'Sora', sans-serif;
+}
+
+html {
+  font-family: 'Sora', sans-serif;
+}
+
+body {
+  font-family: 'Sora', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
 :root {
+  /* Colors */
   --heading: #0b0b0c;
   --muted: #6b7280;
   --card-border: #e5e7eb;
+  
+  /* Typography */
+  font-family: 'Sora', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --primary-300: #a5b4fc;
   --primary-400: #818cf8;
   --primary-500: #6366f1;
@@ -27,7 +46,6 @@ body { background: #ffffff; }
   gap: 7px;
   background: linear-gradient(90deg, #7565D9 0%, #4D0ACD 100%);
   color: #ffffff;
-  font-family: 'Sora', sans-serif;
   font-weight: 600;
   font-size: 14px;
   line-height: 1;
@@ -40,7 +58,6 @@ body { background: #ffffff; }
 }
 
 .titleLanding {
-  font-family: 'Sora', sans-serif;
   font-weight: 600;
   font-style: normal;
   font-size: 40px;
@@ -52,7 +69,6 @@ body { background: #ffffff; }
 
 
 .titleLandingHeading {
-  font-family: Sora;
 font-weight: 400;
 font-style: Regular;
 font-size: 40px;
@@ -81,15 +97,13 @@ color: #00000080;
  height: 17px;
  transform: rotate(0deg);
  opacity: 1;
- font-family: Sora;
-font-weight: 600;
-font-style: SemiBold;
-font-size: 23px;
-leading-trim: CAP_HEIGHT;
-line-height: 100%;
-letter-spacing: 0%;
-color: #000000;
-margin-top: 8px;
+ font-weight: 600;
+ font-style: SemiBold;
+ font-size: 23px;
+ line-height: 100%;
+ letter-spacing: 0%;
+ color: #000000;
+ margin-top: 8px;
 }
 
 .student-desc {
@@ -97,15 +111,13 @@ margin-top: 8px;
   height: 44px;
   transform: rotate(0deg);
   opacity: 1;
-  font-family: Sora;
-font-weight: 400;
-font-style: Regular;
-font-size: 16px;
-leading-trim: CAP_HEIGHT;
-line-height: 100%;
-letter-spacing: 0%;
-color: #454545;  
-margin-top: 17px;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #454545;  
+  margin-top: 17px;
 }
 
 .teacher-title {
@@ -113,16 +125,13 @@ margin-top: 17px;
   height: 17px;
   transform: rotate(0deg);
   opacity: 1;
-  font-family: Sora;
-font-weight: 600;
-font-style: SemiBold;
-font-size: 23px;
-leading-trim: CAP_HEIGHT;
-line-height: 100%;
-letter-spacing: 0%;
-color: #000000;
-margin-top: 8px;
-  
+  font-weight: 600;
+  font-style: SemiBold;
+  font-size: 23px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #000000;
+  margin-top: 8px;
 }
 
 .teacher-desc {
@@ -130,16 +139,13 @@ margin-top: 8px;
   height: 44px;
   transform: rotate(0deg);
   opacity: 1;
-  font-family: Sora;
-font-weight: 400;
-font-style: Regular;
-font-size: 16px;
-leading-trim: CAP_HEIGHT;
-line-height: 100%;
-letter-spacing: 0%;
-color: #454545;
-margin-top: 17px;
-  
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #454545;
+  margin-top: 17px;
 }
 
 .landingContinueButton {
@@ -188,13 +194,240 @@ letter-spacing: 0%;
 color: #000000;
 }
 
-.teacherHeadPageSpan {
+.teacher-page {
+  --primary-gradient: linear-gradient(90deg, #7565D9 0%, #4D0ACD 100%);
+  --input-bg: #F9FAFB;
+  --border-color: #E5E7EB;
+}
+
+/* Custom radio button styles */
+.custom-radio-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0;
+  gap: 12px;
+  min-width: 100px;
+  height: 100%;
+  margin-right: 16px;
+}
+
+.custom-radio-option {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0;
+  gap: 4px;
+  height: 16px;
+}
+
+.custom-radio-option label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.custom-radio-option input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #B4B4B4;
+  border-radius: 50%;
+  margin: 0;
+  padding: 2px;
+  background-clip: content-box;
+  cursor: pointer;
+}
+
+.custom-radio-option input[type="radio"]:checked {
+  border-color: #8F64E1;
+  background-color: #8F64E1;
+}
+
+.custom-radio-option input[type="radio"]:not(:checked) {
+  background-color: #B4B4B4;
+  border-color: #B4B4B4;
+}
+
+.custom-radio-text {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16px;
+  color: #000000;
+}
+
+.teacher-started-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 100%;
+  color: #000000;
+  margin-bottom: 8px;
+}
+
+.teacher-started-title span {
+  font-weight: 800;
+}
+
+.teacher-started-subtitle {
+  font-family: 'Sora', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 160%;
+  color: #6B7280;
+  max-width: 737px;
+  margin-bottom: 40px;
+}
+
+.teacher-question-label {
+  font-family: 'Sora', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 100%;
+  color: #000000;
+}
+
+.teacher-textarea {
+  width: 100%;
+  min-height: 124px;
+  padding: 16px;
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-family: 'Sora', sans-serif;
+  font-size: 15px;
+  resize: none;
+}
+
+.teacher-option-input {
+  height: 44px;
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0 16px;
+  font-family: 'Sora', sans-serif;
+  font-size: 15px;
+  color: #000000;
+}
+
+.teacher-option-number {
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(243.94deg, #8F64E1 -50.82%, #4E377B 216.33%);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.teacher-add-option {
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid #A5B4FC;
+  border-radius: 8px;
+  color: #4338CA;
+  font-family: 'Sora', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  background: transparent;
+  cursor: pointer;
+}
+
+.teacher-ask-button {
+  min-width: 220px;
+  height: 48px;
+  background: var(--primary-gradient);
+  border-radius: 24px;
+  color: white;
+  font-family: 'Sora', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0px 8px 24px rgba(83, 76, 255, 0.25);
+}
+
+.teacher-options-section {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.teacher-section-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 100%;
+  color: #000000;
+  margin-bottom: 16px;
+}
+
+.teacher-started-title {
   font-family: Sora;
-font-weight: 600;
-font-style: SemiBold;
-font-size: 40px;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 100%;
+  color: #000000;
+  margin-bottom: 8px;
+}
+
+.teacher-started-title span {
+  font-weight: 800;
+}
+
+.teacher-started-subtitle {
+  font-family: Sora;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 160%;
+  color: #6B7280;
+  max-width: 737px;
+  margin-bottom: 40px;
+}
+
+.teacher-enter-question-label {
+  font-family: Sora;
+  font-weight: 600;
+  font-style: SemiBold;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0;
+  color: #000000;
+}
+
+.add-more-option-btn {
+  width: 169px;
+  height: 45px;
+  transform: rotate(0deg);
+  opacity: 1;
+  top: 745px;
+  left: 159px;
+  gap: 10px;
+  border-radius: 11px;
+  border-width: 1px;
+  padding: 10px;
+  border: 1px solid #7451B6
+}
+
+.add-option-text {
+  width: 134px;
+  height: 18px;
+  transform: rotate(0deg);
+  opacity: 1;
+  font-family: Sora;
+  font-weight: 600;
+  font-style: SemiBold;
+  font-size: 14px;
 leading-trim: NONE;
 line-height: 100%;
 letter-spacing: 0%;
-color: #000000;
+color: #7C57C2;
+
 }

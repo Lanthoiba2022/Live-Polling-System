@@ -58,11 +58,11 @@ export default function TeacherPage() {
           <div className="max-w-5xl mx-auto px-6 pt-10 pb-28">
             <div className="mb-6"><BrandBadge /></div>
           <>
-            <h1 className="text-4xl font-semibold text-[var(--heading)] mb-2">Let’s <span className="font-extrabold">Get Started</span></h1>
-            <p className="text-[15px] text-[var(--muted)] max-w-3xl mb-10">you’ll have the ability to create and manage polls, ask questions, and monitor your students' responses in real-time.</p>
+            <h1 className="teacher-started-title">Let's <span>Get Started</span></h1>
+            <p className="teacher-started-subtitle">you'll have the ability to create and manage polls, ask questions, and monitor <br /> your students' responses in real-time.</p>
 
             <div className="flex items-center justify-between mb-3">
-              <label className="text-[16px] font-semibold">Enter your question</label>
+              <label className="teacher-enter-question-label">Enter your question</label>
               <TimeSelect value={duration} onChange={setDuration} />
             </div>
             <TextAreaWithCounter value={question} onChange={setQuestion} max={100} placeholder="Type your question here" />
@@ -78,13 +78,13 @@ export default function TeacherPage() {
                     }} />
                   </div>
                 ))}
-                <button onClick={()=>setOptions([...options, { id: Date.now(), text:'', correct: 'Yes' }])} className="mt-2 h-10 px-4 rounded-md border text-[var(--primary-700)] border-[var(--primary-300)]">+ Add More option</button>
+                <button onClick={()=>setOptions([...options, { id: Date.now(), text:'', correct: 'Yes' }])} className="add-more-option-btn ml-8 mt-2"><span className="add-option-text">+ Add More option</span></button>
               </div>
 
               <div>
                 <div className="text-[16px] font-semibold mb-3">Is it Correct?</div>
                 {options.map((opt, idx) => (
-                  <div key={opt.id} className="flex items-center gap-4 mb-6">
+                  <div key={opt.id} className="h-11 flex items-center mb-4">
                     <YesNoRadio name={`opt-${opt.id}`} value={opt.correct} onChange={(v)=>{
                       const list = [...options]; list[idx] = { ...opt, correct: v }; setOptions(list)
                     }} />
@@ -142,8 +142,8 @@ export default function TeacherPage() {
 
       {poll.status !== 'running' && poll.status !== 'ended' && (
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-[0_-6px_24px_rgba(16,24,40,0.06)]">
-          <div className="max-w-5xl mx-auto px-6 py-4 flex justify-center">
-            <button className="min-w-[220px] h-12 rounded-full text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_8px_24px_rgba(83,76,255,0.25)] bg-gradient-to-r from-[var(--primary-500)] to-[var(--primary-600)]" onClick={startPoll}>
+          <div className="px-6 py-4 flex justify-end">
+            <button className="min-w-[220px] h-12 rounded-full text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_8px_24px_rgba(83,76,255,0.25)] bg-gradient-to-r from-[var(--primary-500)] to-[var(--primary-600)] mr-16" onClick={startPoll}>
               Ask Question
             </button>
           </div>
@@ -152,5 +152,3 @@ export default function TeacherPage() {
     </div>
   )
 }
-
-
