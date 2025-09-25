@@ -79,7 +79,20 @@ body { background: #ffffff; overflow-x: hidden; }
     margin: 0; /* avoid layout centering width that causes overflow */
     position: relative;
     left: 50%;
-    transform: translateX(-50%) scale(calc(100vw / (var(--app-base-width) * 1px)));
+    /* Prefer dynamic viewport width on real devices; fallback to vw */
+    transform: translateX(-50%) scale(var(--app-scale, 1));
+  }
+}
+
+/* Use dynamic viewport units where supported to avoid mobile browser UI affecting vw */
+@supports (width: 100dvw) {
+  @media (max-width: 1023px) {
+    :root { --app-scale: calc(100dvw / (var(--app-base-width) * 1px)); }
+  }
+}
+@supports not (width: 100dvw) {
+  @media (max-width: 1023px) {
+    :root { --app-scale: calc(100vw / (var(--app-base-width) * 1px)); }
   }
 }
 
