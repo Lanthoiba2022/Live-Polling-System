@@ -124,7 +124,7 @@ function Results({ results }) {
 
 export default function StudentPage() {
   const dispatch = useDispatch()
-  const { name, joined } = useSelector(s=>s.user)
+  const { name, joined, role } = useSelector(s=>s.user)
   const poll = useSelector(s=>s.poll)
   const [selectedIndex, setSelectedIndex] = useState(null)
   const [submittedRemaining, setSubmittedRemaining] = useState(null)

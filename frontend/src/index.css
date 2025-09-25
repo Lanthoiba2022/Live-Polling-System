@@ -494,3 +494,37 @@ padding-bottom: 17px;
 padding-left: 70px;
 background: linear-gradient(99.18deg, #8F64E1 -46.89%, #1D68BD 223.45%);
 }
+
+.kickTitle {
+  width: 737px;
+height: 50px;
+transform: rotate(0deg);
+opacity: 1;
+font-family: Sora;
+font-weight: 400;
+font-style: Regular;
+font-size: 40px;
+leading-trim: NONE;
+line-height: 100%;
+letter-spacing: 0%;
+text-align: center;
+color: #000000;
+
+}
+
+.kickSub {
+  width: 737px;
+height: 48px;
+transform: rotate(0deg);
+opacity: 1;
+font-family: Sora;
+font-weight: 400;
+font-style: Regular;
+font-size: 19px;
+leading-trim: NONE;
+line-height: 100%;
+letter-spacing: 0%;
+text-align: center;
+color: rgba(0, 0, 0, 0.5);
+
+}

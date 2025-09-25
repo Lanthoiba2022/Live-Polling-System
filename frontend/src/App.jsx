@@ -1,9 +1,13 @@
 import './App.css'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import Landing from './components/Landing'
 import TeacherPage from './components/teacher/TeacherPage'
 import StudentPage from './components/student/StudentPage'
 import PollHistory from './components/teacher/PollHistory'
+import KickedOut from './components/student/KickedOut'
+import { useEffect } from 'react'
+import { getSocket } from './services/socket'
+import { useDispatch } from 'react-redux'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -22,6 +26,18 @@ function CloseButton({ closeToast }) {
 }
 
 function App() {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  useEffect(() => {
+    const socket = getSocket()
+    const onKicked = () => {
+      dispatch({ type: 'user/setJoined', payload: false })
+      dispatch({ type: 'user/setRole', payload: 'kicked' })
+      navigate('/kicked', { replace: true })
+    }
+    socket.on('student:kicked', onKicked)
+    return () => socket.off('student:kicked', onKicked)
+  }, [dispatch])
   return (
     <>
       <Routes>
@@ -29,6 +45,7 @@ function App() {
         <Route path="/teacher" element={<TeacherPage />} />
         <Route path="/teacher/history" element={<PollHistory />} />
         <Route path="/student" element={<StudentPage />} />
+        <Route path="/kicked" element={<KickedOut />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <ToastContainer

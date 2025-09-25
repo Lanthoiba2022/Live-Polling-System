@@ -232,6 +232,36 @@ io.on('connection', (socket) => {
     // Send to everyone EXCEPT the sender to avoid duplicate (client appends optimistically)
     socket.to(r).emit('chat:message', payload)
   })
+
+  // Teacher kicks a student from room and poll
+  socket.on('chat:kick', ({ room, name }) => {
+    const r = String(room || 'poll-global')
+    const targetName = String(name || '').trim()
+    if (!targetName) return
+    // find sockets belonging to this name
+    for (const [sid, info] of state.chat.sockets.entries()) {
+      if (info.name === targetName && info.rooms.has(r)) {
+        const s = io.sockets.sockets.get(sid)
+        if (s) {
+          s.leave(r)
+          info.rooms.delete(r)
+          s.emit('student:kicked')
+        }
+      }
+    }
+    const set = state.chat.participantsByRoom.get(r)
+    if (set) {
+      set.delete(targetName)
+      io.to(r).emit('chat:participants', Array.from(set).map((n) => ({ name: n })))
+    }
+    // Also remove from poll presence
+    state.activeNames.delete(targetName)
+    for (const [sid, nm] of state.studentsBySocketId.entries()) {
+      if (nm === targetName) {
+        state.studentsBySocketId.delete(sid)
+      }
+    }
+  })
 })
 
 app.get('/', (req, res) => {
