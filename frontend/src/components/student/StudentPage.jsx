@@ -44,7 +44,7 @@ function NameEntry({ onSubmit }) {
         <button
           onClick={submit}
           disabled={!name.trim()}
-          className="w-[233px] h-[57px] rounded-[34px] py-[17px] px-[70px] text-white text-[18px] font-semibold disabled:opacity-50 disabled:cursor-not-allowed bg-gradient-to-r from-[#8F64E1] via-[#537BE5] to-[#1D68BD]"
+          className="w-[233px] h-[57px] rounded-[34px] py-[17px] px-[70px] text-white text-[18px] font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed bg-gradient-to-r from-[#8F64E1] via-[#537BE5] to-[#1D68BD]"
         >
           Continue
         </button>
@@ -130,11 +130,9 @@ export default function StudentPage() {
   const [questionNumber, setQuestionNumber] = useState(0) // starts at 0; first running => 1
   const [prevStatus, setPrevStatus] = useState(null)
 
+  // No auto emit on joined/name; we emit explicitly on submit and
+  // rely on server ack events to confirm join
   useEffect(() => {
-    const socket = getSocket()
-    if (joined && name) {
-      socket.emit('student:join', { name })
-    }
   }, [joined, name])
 
   // Reset local submission state when a new poll starts or ends
@@ -160,9 +158,8 @@ export default function StudentPage() {
 
   const handleJoin = (n) => {
     if (!n) return
-    dispatch({ type: 'user/setName', payload: n })
-    dispatch({ type: 'user/setJoined', payload: true })
-    toast.success(`Joined as ${n}`)
+    const socket = getSocket()
+    socket.emit('student:join', { name: n })
   }
 
   const handleVote = (optionIndex) => {

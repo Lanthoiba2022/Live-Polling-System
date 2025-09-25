@@ -86,6 +86,8 @@ io.on('connection', (socket) => {
     }
     state.activeNames.add(trimmed)
     state.studentsBySocketId.set(socket.id, trimmed)
+    // acknowledge successful join
+    socket.emit('student:joined', { name: trimmed })
     // If a poll is running, send current snapshot
     if (state.poll.running) {
       const remaining = Math.max(0, Math.ceil((state.poll.endsAt - Date.now()) / 1000))
