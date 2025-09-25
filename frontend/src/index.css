@@ -274,16 +274,6 @@ color: #000000;
   font-weight: 800;
 } */
 
-.teacher-started-subtitle {
-  font-family: 'Sora', sans-serif;
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 160%;
-  color: #6B7280;
-  max-width: 737px;
-  margin-bottom: 40px;
-}
-
 .teacher-question-label {
   font-family: 'Sora', sans-serif;
   font-size: 16px;
@@ -383,10 +373,9 @@ color: #000000;
 /* .teacher-started-title span {
   font-weight: 800;
 } */
-
 .teacher-started-subtitle {
-  font-family: Sora;
-  font-size: 15px;
+  font-family: 'Sora', sans-serif;
+  font-size: 19px;
   font-weight: 400;
   line-height: 160%;
   color: #6B7280;

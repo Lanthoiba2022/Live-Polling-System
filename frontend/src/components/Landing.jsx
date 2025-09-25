@@ -51,7 +51,12 @@ export default function Landing() {
           <button
             onClick={continueNext}
             disabled={!role}
-            className="landingContinueButton"
+          className={
+            "landingContinueButton " +
+            (!role
+              ? "cursor-not-allowed pointer-events-none"
+              : "cursor-pointer")
+          }
           >
             <span className="landingContinueButtonText">Continue</span>
           </button>
@@ -66,7 +71,7 @@ function RoleCard({ title, description, selected, onClick, titleClass, descClass
     <button
       onClick={onClick}
       className={
-        'text-left w-full rounded-2xl p-6 bg-white border transition shadow-[0_1px_2px_rgba(16,24,40,0.05)] '+
+        'text-left w-full rounded-2xl p-6 bg-white border transition shadow-[0_1px_2px_rgba(16,24,40,0.05)] hover:cursor-pointer '+
         (selected
           ? 'border-[3px] border-[var(--primary-400)]'
           : 'border border-[var(--card-border)] hover:border-[var(--primary-300)]')
