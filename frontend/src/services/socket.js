@@ -10,8 +10,21 @@ export function getSocket() {
       transports: ['websocket'],
     })
 
-    socket.on('connect_error', () => toast.error('Connection error'))
-    socket.on('name-taken', () => toast.error('Name already taken in this room. Pick a different one.'))
+    // Removed non-student toast notifications
+
+    // Duplicate name handling
+    socket.on('name-taken', () => {
+      store.dispatch({ type: 'user/setJoined', payload: false })
+      store.dispatch({ type: 'user/setName', payload: '' })
+      toast.error('This name is already in use. Please choose another.')
+    })
+
+    // Successful join ack
+    socket.on('student:joined', ({ name }) => {
+      store.dispatch({ type: 'user/setName', payload: name })
+      store.dispatch({ type: 'user/setJoined', payload: true })
+      toast.success(`Joined as ${name}`)
+    })
 
     socket.on('poll:waiting', () => {
       store.dispatch({ type: 'poll/waiting' })
