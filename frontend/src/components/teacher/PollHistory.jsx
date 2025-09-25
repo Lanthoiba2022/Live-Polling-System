@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import ResultBar from '../ui/ResultBar'
+import ChatWidget from '../ui/ChatWidget'
 
 export default function PollHistory() {
   const [items, setItems] = useState([])
@@ -64,6 +65,8 @@ export default function PollHistory() {
           )}
         </div>
       </div>
+      {/* Always show chat on history page for teacher */}
+      <ChatWidget room="poll-global" requireJoined={false} identity={{ name: 'Teacher', role: 'teacher' }} />
     </div>
   )
 }

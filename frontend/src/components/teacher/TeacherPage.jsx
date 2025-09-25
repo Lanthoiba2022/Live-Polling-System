@@ -9,6 +9,7 @@ import QuestionAnswerCard from '../ui/QuestionAnswerCard'
 import ResultBar from '../ui/ResultBar'
 import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
+import ChatWidget from '../ui/ChatWidget'
 
 export default function TeacherPage() {
   const dispatch = useDispatch()
@@ -25,6 +26,16 @@ export default function TeacherPage() {
 
   useEffect(() => {
     getSocket()
+  }, [])
+
+  // Always join chat presence as Teacher when on teacher page
+  useEffect(() => {
+    const socket = getSocket()
+    socket.emit('chat:join', { room: 'poll-global', name: 'Teacher', role: 'teacher' })
+    socket.emit('chat:list', { room: 'poll-global' })
+    return () => {
+      socket.emit('chat:leave', { room: 'poll-global' })
+    }
   }, [])
 
   // Ensure students see waiting screen while teacher is preparing the next question
@@ -149,6 +160,11 @@ export default function TeacherPage() {
             </button>
           </div>
         </div>
+      )}
+
+      {/* Show chat for teacher on all screens EXCEPT landing/question creation */}
+      {(poll.status === 'running' || poll.status === 'ended') && (
+        <ChatWidget room="poll-global" requireJoined={false} identity={{ name: 'Teacher', role: 'teacher' }} leaveOnUnmount={false} />
       )}
     </div>
   )

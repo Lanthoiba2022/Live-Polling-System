@@ -3,10 +3,16 @@ import { useSelector } from 'react-redux'
 import { getSocket } from '../../services/socket'
 
 // Reusable chat widget: floating bubble + modal panel
-export default function ChatWidget({ room = 'poll-global', className = '' }) {
-  const { name, role, joined } = useSelector((s) => s.user)
+// Simple in-memory cache to persist messages across route changes within the SPA session
+const messageCacheByRoom = new Map()
+
+export default function ChatWidget({ room = 'poll-global', className = '', requireJoined = true, identity, showBubble = true, leaveOnUnmount = true }) {
+  const { name: storeName, role: storeRole, joined } = useSelector((s) => s.user)
+  const displayName = identity?.name ?? storeName
+  const displayRole = identity?.role ?? storeRole
+  const canChat = requireJoined ? joined : true
   const [isOpen, setIsOpen] = useState(false)
-  const [messages, setMessages] = useState([])
+  const [messages, setMessages] = useState(() => messageCacheByRoom.get(room) || [])
   const [input, setInput] = useState('')
   const [activeTab, setActiveTab] = useState('chat') // 'chat' | 'participants'
   const [participants, setParticipants] = useState([])
@@ -17,35 +23,41 @@ export default function ChatWidget({ room = 'poll-global', className = '' }) {
 
   // Join chat room when user joined
   useEffect(() => {
-    if (!joined) return
-    socket.emit('chat:join', { room })
+    if (!canChat) return
+    socket.emit('chat:join', { room, name: displayName, role: displayRole })
     // Ensure self appears immediately
     setParticipants((prev) => {
-      const me = name
+      const me = displayName
       if (prev.some((p) => p.name === me)) return prev
-      return [...prev, { name: me, role: role || 'student' }]
+      return [...prev, { name: me, role: displayRole || 'student' }]
     })
     // Ask server for current participant list if supported
     socket.emit('chat:list', { room })
     return () => {
-      socket.emit('chat:leave', { room })
+      if (leaveOnUnmount) {
+        socket.emit('chat:leave', { room })
+      }
     }
-  }, [joined, room, socket])
+  }, [canChat, room, socket, displayName, displayRole, leaveOnUnmount])
 
   // Handle incoming messages and presence
   useEffect(() => {
     function onMessage(payload) {
       if (!payload || payload.room !== room) return
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: payload.id || `${Date.now()}-${Math.random()}`,
-          name: payload.name,
-          role: payload.role,
-          text: payload.text,
-          ts: payload.ts || Date.now(),
-        },
-      ])
+      setMessages((prev) => {
+        const next = [
+          ...prev,
+          {
+            id: payload.id || `${Date.now()}-${Math.random()}`,
+            name: payload.name,
+            role: payload.role,
+            text: payload.text,
+            ts: payload.ts || Date.now(),
+          },
+        ]
+        messageCacheByRoom.set(room, next)
+        return next
+      })
     }
     function onParticipants(list) {
       // Expect list of {name, role}
@@ -87,19 +99,18 @@ export default function ChatWidget({ room = 'poll-global', className = '' }) {
 
   const send = () => {
     const text = input.trim()
-    if (!text || !joined) return
-    const payload = {
-      room,
-      text,
-      name: name || 'Anonymous',
-      role: role || 'student',
-    }
+    if (!text || !canChat) return
+    const payload = { room, text, name: displayName || 'Anonymous', role: displayRole || 'student' }
     socket.emit('chat:message', payload)
     // Optimistic append
-    setMessages((prev) => [
-      ...prev,
-      { id: `${Date.now()}-local`, name: payload.name, role: payload.role, text, ts: Date.now() },
-    ])
+    setMessages((prev) => {
+      const next = [
+        ...prev,
+        { id: `${Date.now()}-local`, name: payload.name, role: payload.role, text, ts: Date.now() },
+      ]
+      messageCacheByRoom.set(room, next)
+      return next
+    })
     setInput('')
   }
 
@@ -113,16 +124,19 @@ export default function ChatWidget({ room = 'poll-global', className = '' }) {
   return (
     <div className={"fixed bottom-12 right-12 z-[9998] " + className}>
       {/* Bubble toggle */}
+      {showBubble && (
       <button
         aria-label="Open chat"
         onClick={() => setIsOpen((v) => !v)}
+        type="button"
         className="w-18 h-18 rounded-full shadow-xl flex items-center justify-center bg-[#5A66D1] hover:bg-[#7765DA] hover:opacity-95 cursor-pointer"
       >
         <img src="/chatBub.svg" alt="Chat" className="w-12 h-12 pt-2" />
       </button>
+      )}
 
       {/* Panel */}
-      {isOpen && (
+      {showBubble && isOpen && (
         <div
           className="fixed bg-white shadow-2xl border overflow-hidden"
           style={{
@@ -142,6 +156,7 @@ export default function ChatWidget({ room = 'poll-global', className = '' }) {
             <div className="flex items-center gap-6 text-[15px] font-medium text-gray-800">
               <button
                 className={"pb-2 relative cursor-pointer " + (activeTab === 'chat' ? 'text-[#7C3AED]' : '')}
+                type="button"
                 onClick={() => setActiveTab('chat')}
               >
                 Chat
@@ -151,6 +166,7 @@ export default function ChatWidget({ room = 'poll-global', className = '' }) {
               </button>
               <button
                 className={"pb-2 relative cursor-pointer " + (activeTab === 'participants' ? 'text-[#7C3AED]' : '')}
+                type="button"
                 onClick={() => setActiveTab('participants')}
               >
                 Participants
@@ -162,6 +178,7 @@ export default function ChatWidget({ room = 'poll-global', className = '' }) {
                 <button
                   aria-label="Close chat"
                   onClick={() => setIsOpen(false)}
+                  type="button"
                   className="p-1 rounded-md hover:bg-gray-100 cursor-pointer"
                 >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -180,7 +197,7 @@ export default function ChatWidget({ room = 'poll-global', className = '' }) {
               ) : (
                 <ul className="space-y-6">
                   {messages.map((m) => {
-                    const isSelf = (m.name || '') === (name || '')
+                    const isSelf = (m.name || '') === (displayName || '')
                     return (
                       <li key={m.id} className={"flex " + (isSelf ? 'justify-end' : 'justify-start')}>
                         <div className="max-w-[78%]">
@@ -209,7 +226,7 @@ export default function ChatWidget({ room = 'poll-global', className = '' }) {
               <div className="text-sm text-gray-500 mb-3">Name</div>
               <ul className="space-y-3">
                 {participants.map((p) => {
-                  const label = p.name === name ? `${p.name} (You)` : p.name
+                  const label = p.name === displayName ? `${p.name} (You)` : p.name
                   return (
                     <li key={p.name} className="text-[14px] text-gray-900 font-semibold">{label}</li>
                   )
@@ -228,15 +245,16 @@ export default function ChatWidget({ room = 'poll-global', className = '' }) {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={onKeyDown}
-                  placeholder={joined ? 'Write a message…' : 'Join to chat'}
-                  disabled={!joined}
+                  placeholder={canChat ? 'Write a message…' : 'Join to chat'}
+                  disabled={!canChat}
                   rows={1}
                   className="flex-1 resize-none rounded-lg border border-gray-200 bg-[#F3F4F6] px-3 py-2 text-[13px] text-gray-900 placeholder:text-gray-500 focus:outline-none"
                   style={{ maxHeight: 120 }}
                 />
                 <button
                   onClick={send}
-                  disabled={!joined || !input.trim()}
+                  disabled={!canChat || !input.trim()}
+                  type="button"
                   className="shrink-0 h-10 px-4 rounded-lg text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed bg-[#8F64E1] cursor-pointer"
                 >
                   Send
