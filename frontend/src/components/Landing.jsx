@@ -28,7 +28,7 @@ export default function Landing() {
           Please select the role that best describes you to begin using the live polling system
         </p>
 
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           <RoleCard
             title="I’m a Student"
             description="Lorem Ipsum is simply dummy text of the printing and typesetting industry"
@@ -66,7 +66,7 @@ function RoleCard({ title, description, selected, onClick, titleClass, descClass
     <button
       onClick={onClick}
       className={
-        'text-left w-full rounded-2xl p-4 bg-white border transition shadow-[0_1px_2px_rgba(16,24,40,0.05)] '+
+        'text-left w-full rounded-2xl p-6 bg-white border transition shadow-[0_1px_2px_rgba(16,24,40,0.05)] '+
         (selected
           ? 'border-[3px] border-[var(--primary-400)]'
           : 'border border-[var(--card-border)] hover:border-[var(--primary-300)]')
