@@ -442,7 +442,7 @@ color: #000000;
 }
 
 .waitAfterSubmit {
-  width: 737px;
+  width: 690px;
   height: 30px;
   transform: rotate(0deg);
   opacity: 1;
@@ -488,4 +488,20 @@ line-height: 100%;
 letter-spacing: 0%;
 color: #7C57C2;
 
+}
+
+.submitBtn {
+  width: 234px;
+height: 58px;
+transform: rotate(0deg);
+opacity: 1;
+top: 651px;
+left: 850px;
+gap: 10px;
+border-radius: 34px;
+padding-top: 17px;
+padding-right: 70px;
+padding-bottom: 17px;
+padding-left: 70px;
+background: linear-gradient(99.18deg, #8F64E1 -46.89%, #1D68BD 223.45%);
 }
