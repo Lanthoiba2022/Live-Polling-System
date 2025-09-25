@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600&display=swap');
 
 :root {
   --heading: #0b0b0c;
@@ -15,3 +15,186 @@
 html, body, #root { height: 100%; }
 body { background: #ffffff; }
 
+.brand-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 134px;
+  height: 31px;
+  border-radius: 24px;
+  padding-left: 9px;
+  padding-right: 9px;
+  gap: 7px;
+  background: linear-gradient(90deg, #7565D9 0%, #4D0ACD 100%);
+  color: #ffffff;
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1;
+  opacity: 1;
+}
+
+.brand-badge__icon {
+  width: 15px;
+  height: 15px;
+}
+
+.titleLanding {
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 40px;
+  line-height: 100%;
+  letter-spacing: 0;
+  text-align: center;
+  color: #000000;
+}
+
+
+.titleLandingHeading {
+  font-family: Sora;
+font-weight: 400;
+font-style: Regular;
+font-size: 40px;
+leading-trim: NONE;
+line-height: 100%;
+letter-spacing: 0%;
+text-align: center;
+color: #000000;
+}
+
+.landingSubHeading {
+font-family: Sora;
+font-weight: 400;
+font-style: Regular;
+font-size: 19px;
+leading-trim: NONE;
+line-height: 100%;
+letter-spacing: 0%;
+text-align: center;
+color: #00000080;
+}
+
+
+.student-title {
+ width: 155px;
+ height: 17px;
+ transform: rotate(0deg);
+ opacity: 1;
+ font-family: Sora;
+font-weight: 600;
+font-style: SemiBold;
+font-size: 23px;
+leading-trim: CAP_HEIGHT;
+line-height: 100%;
+letter-spacing: 0%;
+color: #000000;
+margin-top: 8px;
+}
+
+.student-desc {
+  width: 385px;
+  height: 44px;
+  transform: rotate(0deg);
+  opacity: 1;
+  font-family: Sora;
+font-weight: 400;
+font-style: Regular;
+font-size: 16px;
+leading-trim: CAP_HEIGHT;
+line-height: 100%;
+letter-spacing: 0%;
+color: #454545;  
+margin-top: 17px;
+}
+
+.teacher-title {
+  width: 153px;
+  height: 17px;
+  transform: rotate(0deg);
+  opacity: 1;
+  font-family: Sora;
+font-weight: 600;
+font-style: SemiBold;
+font-size: 23px;
+leading-trim: CAP_HEIGHT;
+line-height: 100%;
+letter-spacing: 0%;
+color: #000000;
+margin-top: 8px;
+  
+}
+
+.teacher-desc {
+  width: 326px;
+  height: 44px;
+  transform: rotate(0deg);
+  opacity: 1;
+  font-family: Sora;
+font-weight: 400;
+font-style: Regular;
+font-size: 16px;
+leading-trim: CAP_HEIGHT;
+line-height: 100%;
+letter-spacing: 0%;
+color: #454545;
+margin-top: 17px;
+  
+}
+
+.landingContinueButton {
+  width: 233.93408203125;
+height: 57.58056640625;
+top: 598px;
+left: 633px;
+border-radius: 34px;
+padding-top: 17px;
+padding-right: 70px;
+padding-bottom: 17px;
+padding-left: 70px;
+gap: 10px;
+transform: rotate(0deg);
+opacity: 1;
+background: linear-gradient(99.18deg, #8F64E1 -46.89%, #1D68BD 223.45%);
+}
+
+.landingContinueButtonText {
+  width: 87px;
+height: 23px;
+transform: rotate(0deg);
+opacity: 1;
+font-family: Sora;
+font-weight: 600;
+font-style: SemiBold;
+font-size: 18px;
+leading-trim: NONE;
+line-height: 100%;
+letter-spacing: 0%;
+color: #FFFFFF;
+}
+
+.teacherHeadPage {
+  width: 737px;
+height: 50px;
+transform: rotate(0deg);
+opacity: 1;
+font-family: Sora;
+font-weight: 400;
+font-style: Regular;
+font-size: 40px;
+leading-trim: NONE;
+line-height: 100%;
+letter-spacing: 0%;
+color: #000000;
+}
+
+.teacherHeadPageSpan {
+  font-family: Sora;
+font-weight: 600;
+font-style: SemiBold;
+font-size: 40px;
+leading-trim: NONE;
+line-height: 100%;
+letter-spacing: 0%;
+color: #000000;
+}
