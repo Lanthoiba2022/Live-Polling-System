@@ -83,7 +83,7 @@ function Running({ question, remaining, options = [], onSubmit }) {
             key={idx}
             onClick={()=>setSelected(idx)}
             className={
-              'w-full h-12 rounded-md border px-4 text-left bg-[#f2f2f2] '+
+              'w-full h-12 rounded-md border px-4 text-left bg-[#f2f2f2] cursor-pointer '+
               (selected===idx ? 'ring-2 ring-[var(--primary-500)] bg-white' : '')
             }
           >
@@ -197,15 +197,15 @@ export default function StudentPage() {
                 selectedIndex={selectedIndex}
                 onSelect={setSelectedIndex}
               />
-            <div className="mt-6 flex justify-center">
-              <button
-                onClick={()=> selectedIndex!==null && handleVote(selectedIndex)}
-                disabled={selectedIndex===null}
-                className="min-w-[220px] h-12 rounded-full text-white font-semibold shadow-[0_8px_24px_rgba(83,76,255,0.25)] bg-gradient-to-r from-[var(--primary-500)] to-[var(--primary-600)]"
-              >
-                Submit
-              </button>
-            </div>
+              <div className="mt-6 flex justify-end">
+                <button
+                  onClick={() => selectedIndex !== null && handleVote(selectedIndex)}
+                  disabled={selectedIndex === null}
+                  className="submitBtn cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <span className='w-[68px] h-[23px] font-semibold text-[18px] text-[#FFFFFF]'>Submit</span>
+                </button>
+              </div>
             </>
           ) : (
             <>
@@ -222,12 +222,9 @@ export default function StudentPage() {
                   })}
                 </div>
               </div>
-              <p className="text-center mt-8 text-[18px] font-extrabold tracking-tight text-[var(--heading)]">Wait for the teacher to ask a new question.</p>
+              <p className="waitAfterSubmit mt-12">Wait for the teacher to ask a new question..</p>
             </>
           )}
-          <button aria-label="chat" className="fixed bottom-6 right-6 w-14 h-14 rounded-full grid place-items-center text-white bg-gradient-to-br from-[var(--primary-500)] to-[var(--primary-700)] shadow-[0_10px_30px_rgba(83,76,255,0.35)]">
-            💬
-          </button>
         </div>
       ) : (
         <div className="w-full max-w-3xl px-6">
@@ -254,9 +251,6 @@ export default function StudentPage() {
           <p className="waitAfterSubmit mt-12">Wait for the teacher to ask a new question..</p>
         </div>
       )}
-      <button aria-label="chat" className="fixed bottom-6 right-6 w-14 h-14 rounded-full grid place-items-center text-white bg-gradient-to-br from-[var(--primary-500)] to-[var(--primary-700)] shadow-[0_10px_30px_rgba(83,76,255,0.35)]">
-        💬
-      </button>
     </div>
   )
 }

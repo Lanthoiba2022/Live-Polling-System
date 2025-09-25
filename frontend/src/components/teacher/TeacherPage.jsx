@@ -97,8 +97,9 @@ export default function TeacherPage() {
       ) : (
         <div className="min-h-dvh flex items-center justify-center">
           {poll.status === 'ended' && (
-            <Link to="/teacher/history" className="fixed top-14 right-12 h-12 px-6 rounded-full text-white font-semibold bg-gradient-to-r from-[var(--primary-500)] to-[var(--primary-600)] grid place-items-center shadow-[0_8px_24px_rgba(83,76,255,0.25)]">
-              View Poll history
+            <Link to="/teacher/history" className="fixed top-14 right-12 h-12 px-6 rounded-full text-white bg-[#8F64E1] hover:bg-[#6454C8] flex items-center gap-2">
+              <img src="/eyePoll.svg" alt="" className="w-[30px] h-[30px]" />
+              <span className='text-[18px] font-semibold text-[#FFFFFF]'>View Poll history</span>
             </Link>
           )}
           <div className="w-full max-w-3xl px-6">
