@@ -58,7 +58,7 @@ export default function TeacherPage() {
           <div className="max-w-5xl mx-auto px-6 pt-10 pb-28">
             <div className="mb-6"><BrandBadge /></div>
           <>
-            <h1 className="teacher-started-title">Let's <span>Get Started</span></h1>
+            <h1 className="teacher-started-title">Let's <span className="titleLanding">Get Started</span></h1>
             <p className="teacher-started-subtitle">you'll have the ability to create and manage polls, ask questions, and monitor <br /> your students' responses in real-time.</p>
 
             <div className="flex items-center justify-between mb-3">

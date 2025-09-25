@@ -270,9 +270,9 @@ color: #000000;
   margin-bottom: 8px;
 }
 
-.teacher-started-title span {
+/* .teacher-started-title span {
   font-weight: 800;
-}
+} */
 
 .teacher-started-subtitle {
   font-family: 'Sora', sans-serif;
@@ -380,9 +380,9 @@ color: #000000;
   margin-bottom: 8px;
 }
 
-.teacher-started-title span {
+/* .teacher-started-title span {
   font-weight: 800;
-}
+} */
 
 .teacher-started-subtitle {
   font-family: Sora;
@@ -402,6 +402,43 @@ color: #000000;
   line-height: 100%;
   letter-spacing: 0;
   color: #000000;
+}
+
+.studLets {
+  width: 737px;
+  height: 50px;
+  transform: rotate(0deg);
+  opacity: 1;
+  font-family: Sora;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 40px;
+leading-trim: NONE;
+line-height: 100%;
+letter-spacing: 0%;
+text-align: center;
+color: #000000;
+
+}
+
+
+.questionWaitingText {
+  width: 737px;
+  height: 42px;
+  transform: rotate(0deg);
+  opacity: 1;
+  top: 522px;
+  left: 366px;
+font-family: Sora;
+font-weight: 600;
+font-style: SemiBold;
+font-size: 33px;
+leading-trim: NONE;
+line-height: 100%;
+letter-spacing: 0%;
+text-align: center;
+color: #000000;
+
 }
 
 .add-more-option-btn {

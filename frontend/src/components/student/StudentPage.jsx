@@ -19,29 +19,32 @@ function NameEntry({ onSubmit }) {
         <BrandBadge />
       </div>
 
-      <h1 className="text-center text-4xl md:text-5xl font-semibold tracking-tight text-[var(--heading)]">
-        Let’s <span className="font-extrabold">Get Started</span>
+      <h1 className="studLets">
+        Let’s <span className="titleLanding">Get Started</span>
       </h1>
-      <p className="mt-3 text-center text-base text-[var(--muted)] max-w-3xl mx-auto">
-        If you’re a student, you’ll be able to <span className="font-semibold text-[var(--heading)]">submit your answers</span>, participate in live polls, and see how your responses compare with your classmates
+      <p className="mt-3 text-center text-[18px] text-base text-[var(--muted)] max-w-3xl mx-auto">
+        If you’re a student, you’ll be able to <span className="font-semibold text-[var(--heading)]">submit your answers</span>, participate in live<br /> polls, and see how your responses compare with your classmates
       </p>
 
-      <div className="mt-10 max-w-xl mx-auto">
-        <label className="block text-sm font-medium text-[var(--heading)] mb-2">Enter your Name</label>
-        <input
-          className="w-full h-12 px-4 rounded-md border border-gray-200 bg-[#f2f2f2] text-[var(--heading)] placeholder:text-gray-500 focus:outline-none"
-          placeholder="Your name"
-          value={name}
-          onChange={e=>setName(e.target.value)}
-          onKeyDown={e=>e.key==='Enter' && submit()}
-        />
+      <div className="mt-10 max-w-xl mx-auto flex flex-col items-center">
+        <div className="w-[85%]">
+          <label className="block text-lg font-medium text-[var(--heading)] mb-2">Enter your Name</label>
+          <input
+            className="w-full h-[48px] px-4 rounded-md border border-gray-200 bg-[#f2f2f2] text-[var(--heading)] placeholder:text-gray-500 focus:outline-none"
+            placeholder="Your name"
+            value={name}
+            onChange={e=>setName(e.target.value)}
+            onKeyDown={e=>e.key==='Enter' && submit()}
+          />
+        </div>
+
       </div>
 
-      <div className="mt-8 flex justify-center">
+      <div className="mt-12 flex justify-center">
         <button
           onClick={submit}
           disabled={!name.trim()}
-          className="min-w-[220px] h-12 rounded-full text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_8px_24px_rgba(83,76,255,0.25)] bg-gradient-to-r from-[var(--primary-500)] to-[var(--primary-600)]"
+          className="w-[233px] h-[57px] rounded-[34px] py-[17px] px-[70px] text-white text-[18px] font-semibold disabled:opacity-50 disabled:cursor-not-allowed bg-gradient-to-r from-[#8F64E1] via-[#537BE5] to-[#1D68BD]"
         >
           Continue
         </button>
@@ -53,12 +56,12 @@ function NameEntry({ onSubmit }) {
 function Waiting() {
   return (
     <div className="w-full max-w-4xl mx-auto px-4">
-      <div className="flex justify-center mb-6">
+      <div className="flex justify-center mb-12">
         <BrandBadge />
       </div>
       <div className="flex flex-col items-center">
-        <CircularLoader className="mb-6" />
-        <p className="text-2xl md:text-[28px] font-extrabold tracking-tight text-[var(--heading)] text-center">
+        <CircularLoader className="mb-12" />
+        <p className="questionWaitingText">
           Wait for the teacher to ask questions..
         </p>
       </div>
