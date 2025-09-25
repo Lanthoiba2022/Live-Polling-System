@@ -4,7 +4,7 @@ export default function ResultBar({ index, label, value = 0, total = 0, color = 
     <div className="relative rounded-md border border-gray-200 bg-white overflow-hidden">
       <div
         className="absolute inset-y-0 left-0"
-        style={{ width: `${pct}%`, background: `linear-gradient(90deg, var(--primary-500), var(--primary-600))` }}
+        style={{ width: `${pct}%`, backgroundColor: '#4F0DCE' }}
       />
       <div className="relative flex items-center justify-between px-3 h-12">
         <div className="flex items-center gap-3">

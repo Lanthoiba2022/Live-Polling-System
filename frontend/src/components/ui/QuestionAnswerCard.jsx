@@ -12,7 +12,8 @@ export default function QuestionAnswerCard({ question, options = [], selectedInd
             onClick={()=> onSelect && onSelect(idx)}
             className={'w-full h-12 rounded-md border px-4 text-left bg-[#F3F4F6] transition-shadow '+(selectedIndex===idx?'ring-2 ring-[#7C3AED] bg-white':'')}
           >
-            <span className="mr-3 inline-flex items-center justify-center w-6 h-6 rounded-full bg-white border" style={{color:'#6D28D9'}}>{idx+1}</span>
+            <span className={'mr-3 inline-flex items-center justify-center w-6 h-6 rounded-full text-white ' + 
+              (selectedIndex===idx ? 'bg-[#4F0DCE]' : 'bg-[#6E6E6E]')}>{idx+1}</span>
             {label}
           </button>
         ))}

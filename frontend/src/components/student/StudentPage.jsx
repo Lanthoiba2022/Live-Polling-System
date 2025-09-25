@@ -184,8 +184,8 @@ export default function StudentPage() {
         <div className="w-full max-w-3xl px-6">
           <div className="flex items-center gap-8 mb-4">
             <h2 className="text-[22px] md:text-[24px] font-semibold tracking-tight">Question {questionNumber || 1}</h2>
-            <span className="text-sm flex items-center gap-2">
-              <span aria-hidden>⏱</span>
+            <span className="text-xl flex items-center gap-1">
+              <span aria-hidden><img src="/clock.svg" alt="Timer" className="w-7 h-7" /></span>
               <span className="font-semibold" style={{color:'#EF4444'}}>00:{String(submittedRemaining ?? poll.remaining).padStart(2,'0')}</span>
             </span>
           </div>
@@ -233,8 +233,8 @@ export default function StudentPage() {
         <div className="w-full max-w-3xl px-6">
           <div className="flex items-center gap-8 mb-4">
             <h2 className="text-[22px] md:text-[24px] font-semibold tracking-tight">Question {questionNumber || 1}</h2>
-            <span className="text-sm flex items-center gap-2">
-              <span aria-hidden>⏱</span>
+            <span className="text-xl flex items-center gap-1">
+              <span aria-hidden><img src="/clock.svg" alt="Timer" className="w-7 h-7" /></span>
               <span className="font-semibold" style={{color:'#EF4444'}}>00:{String(submittedRemaining ?? 0).padStart(2,'0')}</span>
             </span>
           </div>
@@ -251,7 +251,7 @@ export default function StudentPage() {
               })}
             </div>
           </div>
-          <p className="text-center mt-8 text-[18px] font-extrabold tracking-tight text-[var(--heading)]">Wait for the teacher to ask a new question.</p>
+          <p className="waitAfterSubmit mt-12">Wait for the teacher to ask a new question..</p>
         </div>
       )}
       <button aria-label="chat" className="fixed bottom-6 right-6 w-14 h-14 rounded-full grid place-items-center text-white bg-gradient-to-br from-[var(--primary-500)] to-[var(--primary-700)] shadow-[0_10px_30px_rgba(83,76,255,0.35)]">
