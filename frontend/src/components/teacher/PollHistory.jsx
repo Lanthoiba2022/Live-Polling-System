@@ -33,7 +33,7 @@ export default function PollHistory() {
     <div className="min-h-dvh bg-white">
       <div className="max-w-4xl mx-auto px-6 py-8">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-3xl font-semibold">View <span className="font-extrabold">Poll History</span></h1>
+          <h1 className="text-[40px]">View <span className="titleLanding">Poll History</span></h1>
           <Link to="/teacher" className="h-10 px-4 rounded-full border text-[var(--primary-700)] border-[var(--primary-300)] grid place-items-center">Back</Link>
         </div>
 
