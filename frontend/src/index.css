@@ -170,6 +170,31 @@ body { background: #ffffff; overflow-x: hidden; }
     font-size: 20px !important;
     line-height: 1.3 !important;
   }
+  
+  /* Mobile-specific KickedOut page fixes */
+  .kickTitle {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 15px !important;
+    margin: 0 auto 20px auto !important;
+    text-align: center !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    font-size: 32px !important;
+    line-height: 1.2 !important;
+  }
+  
+  .kickSub {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 15px !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    font-size: 16px !important;
+    line-height: 1.4 !important;
+  }
 }
 
 /* Support for dynamic viewport units */
