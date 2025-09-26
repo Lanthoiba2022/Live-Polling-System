@@ -6,7 +6,11 @@ let socket
 
 export function getSocket() {
   if (!socket) {
-    socket = io(import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000', {
+    const backendUrl = import.meta.env.VITE_BACKEND_URL
+    if (!backendUrl) {
+      throw new Error('VITE_BACKEND_URL environment variable is not set. Please configure your backend URL.')
+    }
+    socket = io(backendUrl, {
       transports: ['websocket'],
     })
 

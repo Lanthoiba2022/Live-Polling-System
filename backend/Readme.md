@@ -82,17 +82,25 @@ Maintained in `src/index.js`:
 - `chat`: `participantsByRoom: Map<room, Set<name>>`, `sockets: Map<socketId, { name, rooms: Set<room> }>`
 
 ### Local setup
-1) Install dependencies
+## Backend URL Configuration
+
+The application requires the `VITE_BACKEND_URL` environment variable to be set for both local development and production deployment.
+
+### Local Development
+
+1. **Create a `.env.local` file in the frontend directory:**
+   ```bash
+   # Live-Polling-System/frontend/.env.local
+   VITE_BACKEND_URL=http://localhost:4000
+   ```
+
+2) Install dependencies
 ```
+cd backend
 npm install
 ```
 
-2) Development (with auto‑reload)
-```
-npm run dev
-```
-
-3) Production run
+3) Development (with auto‑reload)
 ```
 npm start
 ```

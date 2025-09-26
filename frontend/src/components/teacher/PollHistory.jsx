@@ -13,7 +13,10 @@ export default function PollHistory() {
     async function load() {
       try {
         setLoading(true)
-        const rawBase = import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000'
+        const rawBase = import.meta.env.VITE_BACKEND_URL
+        if (!rawBase) {
+          throw new Error('VITE_BACKEND_URL environment variable is not set. Please configure your backend URL.')
+        }
         const base = rawBase.replace(/\/+$/,'')
         const res = await fetch(`${base}/history`, { signal: controller.signal })
         if (!res.ok) throw new Error('Failed to fetch history')
