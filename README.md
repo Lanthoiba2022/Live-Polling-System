@@ -50,16 +50,16 @@ The application requires the `VITE_BACKEND_URL` environment variable to be set f
 
 ### Local Development
 
-1. **Create a `.env.local` file in the frontend directory:**
-   ```bash
-   # Live-Polling-System/frontend/.env.local
-   VITE_BACKEND_URL=http://localhost:4000
-   ```
-2) Clone the repo
+1) Clone the repo
 ```
 git clone https://github.com/your-username/Live-Polling-System.git
 cd Live-Polling-System
 ```
+2) **Create a `.env.local` file in the frontend directory:**
+   ```bash
+   # Live-Polling-System/frontend/.env.local
+   VITE_BACKEND_URL=http://localhost:4000
+   ```
 3) Start the backend (Terminal A)
 ```
 cd backend
