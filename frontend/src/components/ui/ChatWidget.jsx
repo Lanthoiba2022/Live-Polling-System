@@ -138,7 +138,7 @@ export default function ChatWidget({ room = 'poll-global', className = '', requi
       {/* Panel */}
       {showBubble && isOpen && (
         <div
-          className="fixed bg-white shadow-2xl border overflow-hidden"
+          className="fixed bg-white shadow-2xl border overflow-hidden chat-panel-desktop"
           style={{
             width: 429,
             height: 477,
